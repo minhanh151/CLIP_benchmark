@@ -110,12 +110,23 @@ def run_classification(model, classifier, dataloader, device, amp=True):
                 image_features = model.encode_image(images)
                 image_features = F.normalize(image_features, dim=-1)
                 logits = 100. * image_features @ classifier
-            
+                # print(classifier.shape)
+                # print(classifier)
+                # print(logits.shape)
+                # print(logits)
+                # print(target.shape)
+                # print(target)
+
             true.append(target.cpu())
             pred.append(logits.float().cpu())
 
     pred = torch.cat(pred)
     true = torch.cat(true)
+    print(pred.shape)
+    print(true.shape)
+    print(pred)
+    i = 1
+    print("AHAHAHA" + i)
     return pred, true
 
 def average_precision_per_class(scores, targets):
@@ -190,6 +201,7 @@ def evaluate(model, dataloader, tokenizer, classnames, templates, device, amp=Tr
 
     dict of classification metrics
     """
+    print("ENTER EVALUATE - zeroshot_classification")
     if len(load_clfs) > 0:
         n = len(load_clfs)
         classifier = torch.load(load_clfs[0], map_location='cpu') / n
@@ -204,6 +216,7 @@ def evaluate(model, dataloader, tokenizer, classnames, templates, device, amp=Tr
         # exit() - not sure if we want to exit here or not.
 
     logits, target = run_classification(model, classifier, dataloader, device, amp=amp)
+
     is_multilabel = (len(target.shape) == 2)
 
     if is_multilabel:

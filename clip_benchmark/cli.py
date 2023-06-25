@@ -6,10 +6,18 @@ import torch
 import csv
 from copy import copy
 import os
-from clip_benchmark.datasets.builder import build_dataset, get_dataset_collate_fn, get_dataset_default_task, dataset_collection, get_dataset_collection_from_file
-from clip_benchmark.metrics import zeroshot_classification, zeroshot_retrieval, linear_probe, mscoco_generative
-from clip_benchmark.model_collection import get_model_collection_from_file, model_collection
-from clip_benchmark.models import load_clip, MODEL_TYPES
+# from clip_benchmark.datasets.builder import build_dataset, get_dataset_collate_fn, get_dataset_default_task, dataset_collection, get_dataset_collection_from_file
+# from clip_benchmark.metrics import zeroshot_classification, zeroshot_retrieval, linear_probe, mscoco_generative
+# from clip_benchmark.model_collection import get_model_collection_from_file, model_collection
+# from clip_benchmark.models import load_clip, MODEL_TYPES
+
+import sys
+sys.path.append("clip_benchmark")
+from datasets.builder import build_dataset, get_dataset_collate_fn, get_dataset_default_task, dataset_collection, get_dataset_collection_from_file
+from metrics import zeroshot_classification, zeroshot_retrieval, linear_probe, mscoco_generative
+from model_collection import get_model_collection_from_file, model_collection
+from models import load_clip, MODEL_TYPES
+
 
 def get_parser_args():
     parser = argparse.ArgumentParser()
@@ -217,6 +225,7 @@ def run(args):
                 collate_fn=collate_fn
             )
     if task == "zeroshot_classification":
+
         zeroshot_templates = dataset.templates if hasattr(dataset, "templates") else None
         if args.cupl:
             assert (zeroshot_templates is not None), "Dataset does not support CuPL prompts"        

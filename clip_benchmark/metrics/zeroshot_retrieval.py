@@ -65,6 +65,12 @@ def evaluate(model, dataloader, tokenizer,  device, amp=True, recall_k_list=[5])
 
     # get the score for each text and image pair
     scores  = texts_emb @ images_emb.t()
+    print(texts_emb.shape)
+    print(images_emb.shape)
+    print(scores.shape)
+    print(scores)
+    i = 1
+    print("zeroshot_retrieval AHAHAHA" + i)
 
     # construct a the positive pair matrix, which tells whether each text-image pair is a positive or not
     positive_pairs = torch.zeros_like(scores, dtype=bool)
